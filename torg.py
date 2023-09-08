@@ -23,17 +23,27 @@ def schedule_view(file):
                 print(noteLine.replace("DONE", "\x1b[6;30;42m DONE \x1b[0m"))
         noteLine = line
 
+def help_message():
+    print("----------------------------------\n\
+            \rUsage: torg [COMMAND]\n\
+           \r----------------------------------\n\
+            \rtorg sched    [show today's tasks]")
+
 def main(argv):
 
     USER = os.environ['USER']
     file = open(f"/home/{USER}/org/Orgmode.org", 'r')
-    if (" " or "help" in argv):
-            print("----------------------------------\n\
-                    \rUsage: torg [COMMAND]\n\
-                   \r----------------------------------\n\
-                    \rtorg sched    [show today's tasks]")
-    elif ("sched" in argv):
+    #print(sys.argv[1])
+    if (len(argv)>1):
+        if ("sched" == sys.argv[1]):
             schedule_view(file)
+        elif ("help" == sys.argv[1]):
+            help_message()
+        else:
+            print(f"torg: Unknown command: {sys.argv[1]}")
+
+    else:
+        help_message()
 
     file.close()
 
