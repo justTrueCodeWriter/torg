@@ -14,11 +14,11 @@ months = ('January', 'February', 'March', 'April', 'May', 'June', 'July', 'Augus
 scheduleDate = f"{curYear}-{curMonth}-{curDay}" 
 
 def schedule_view(file):
+    print(f"{curWeekday} {curDay} {months[int(curMonth)-1]} {curYear} W{curWeekNumber}")
     noteLine = ''
     isScheduled = False
     for line in file:
         if ("SCHEDULED: <" + scheduleDate in line):
-            print(f"{curWeekday} {curDay} {months[int(curMonth)-1]} {curYear} W{curWeekNumber}")
             isScheduled = True
             noteLine = noteLine.replace('\n', '')
             if("TODO" in noteLine):
@@ -45,7 +45,8 @@ def help_message():
     print("----------------------------------\n\
             \rUsage: torg [COMMAND]\n\
            \r----------------------------------\n\
-            \rtorg sched    [show today's tasks]")
+            \rtorg sched    [show today's tasks]\n\
+            \rtorg todo     [show all ToDo's]")
 
 def main(argv):
 
