@@ -14,7 +14,7 @@ months = ('January', 'February', 'March', 'April', 'May', 'June', 'July', 'Augus
 
 scheduleDate = f"{curYear}-{curMonth}-{curDay}" 
 
-def schedule_view(filename) -> None:
+def schedule_view(filename: str) -> None:
     file = open(filename, 'r')
     print(f"{curWeekday} {curDay} {months[int(curMonth)-1]} {curYear} W{curWeekNumber}")
     noteLine = ''
@@ -34,15 +34,23 @@ def schedule_view(filename) -> None:
         print("Nothing is scheduled :)")
     file.close()
 
-def todo_view(filename) -> None:
+def todo_view(filename: str, tag_filter: str) -> None:
     file = open(filename, 'r')
 
     noteLine = ''
     isTodo = False
+    isFilterActive = False   
     lineNumber = -1
+
+    if (tag_filter):
+        isFilterActive = True
+
     for line in file:
         noteLine = noteLine.replace('\n', '')
-        if("TODO" in noteLine):
+        if ("TODO" in noteLine and (f":{tag_filter}:" in noteLine)):
+            isTodo = True
+            print(f"{lineNumber} "+noteLine.replace("TODO", "\x1b[1;31;40m TODO \x1b[0m"))
+        if("TODO" in noteLine and not isFilterActive):
             isTodo = True
             print(f"{lineNumber} "+noteLine.replace("TODO", "\x1b[1;31;40m TODO \x1b[0m"))
         noteLine = line
@@ -83,7 +91,10 @@ def main(argv):
         elif ("sched" == sys.argv[1]):
             schedule_view(filename)
         elif ("todo" == sys.argv[1]):
-            todo_view(filename)
+            if (len(sys.argv) == 3):
+                todo_view(filename, sys.argv[2])
+            else:
+                todo_view(filename, "")
         elif ("done" == sys.argv[1]):
             set_task_done(filename, int(sys.argv[2]))
         else:
