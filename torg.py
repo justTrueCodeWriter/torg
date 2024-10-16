@@ -60,16 +60,35 @@ def todo_view(filename: str, tag_filter: str) -> None:
     file.close()
 
 def agenda_view(filename: str) -> None:
-    #file = open(filename, 'r')
+    file = open(filename, 'r')
     
     noteLine = ''
     isTodo = False
     lineNumber = -1
-    
+    isScheduled = False
+
     #TODO: add agenda view here
     #NOTE: form 7days 2d list, walk through the file line by line and add it to the 2D list by days
     #NOTE: SUN, MON, TUE, WED, THU, FRI, SAT
     #NOTE: [[], [], [], [], [], [], []]
+
+    week_dict = dict()
+
+    for line in file:
+        if ("SCHEDULED: <" + scheduleDate in line):
+            isScheduled = True
+            noteLine = noteLine.replace('\n', '')
+            if("TODO" in noteLine):
+                print(f"{lineNumber} "+noteLine.replace("TODO", "\x1b[1;31;40m TODO \x1b[0m"))
+            elif ("DONE" in noteLine):
+                print(f"{lineNumber} "+noteLine.replace("DONE", "\x1b[1;32;40m DONE \x1b[0m"))
+        noteLine = line 
+        lineNumber+=1
+    if (isScheduled == False):
+        print("Nothing is scheduled :)")
+
+
+    file.close()
 
 
 def set_task_done(filename: str, str_number: int) -> None:
