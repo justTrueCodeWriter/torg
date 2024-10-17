@@ -1,6 +1,6 @@
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import TextIOWrapper
 
 currentTime = datetime.now()
@@ -61,34 +61,53 @@ def todo_view(filename: str, tag_filter: str) -> None:
 
 def agenda_view(filename: str) -> None:
     file = open(filename, 'r')
+    file.close()
     
-    noteLine = ''
-    isTodo = False
-    lineNumber = -1
-    isScheduled = False
 
     #TODO: add agenda view here
     #NOTE: form 7days 2d list, walk through the file line by line and add it to the 2D list by days
     #NOTE: SUN, MON, TUE, WED, THU, FRI, SAT
     #NOTE: [[], [], [], [], [], [], []]
 
-    week_dict = dict()
+    agenda_dict = dict()
+    timeToday = datetime.now()
+    for i in range (0, 7):
+        dt = timeToday + timedelta(days=i)
+        weekday = dt.strftime("%A") 
+        weekNumber = dt.strftime("%W")
+        day = dt.strftime("%d") 
+        month = dt.strftime("%m")
+        year = dt.strftime("%Y")
 
+
+        #print(f"{weekday} {day} {months[int(month)-1]} {year} W{weekNumber}")
+
+        iterSchedDate = f"{year}-{month}-{day}" 
+        agenda_dict.update({iterSchedDate: []})
+
+    for agendaDate in agenda_dict.keys():
+        print(agendaDate)
+        for note in agenda_dict[agendaDate]:
+            print(note) 
+
+"""     
+    noteLine = ''
+    lineNumber = 0
+    isScheduled = False
     for line in file:
         if ("SCHEDULED: <" + scheduleDate in line):
             isScheduled = True
             noteLine = noteLine.replace('\n', '')
             if("TODO" in noteLine):
-                print(f"{lineNumber} "+noteLine.replace("TODO", "\x1b[1;31;40m TODO \x1b[0m"))
+                print(f"{lineNumber} "+noteLine.replace("TODO", "\x2b[1;31;40m TODO \x1b[0m"))
             elif ("DONE" in noteLine):
-                print(f"{lineNumber} "+noteLine.replace("DONE", "\x1b[1;32;40m DONE \x1b[0m"))
+                print(f"{lineNumber} "+noteLine.replace("DONE", "\x2b[1;32;40m DONE \x1b[0m"))
         noteLine = line 
-        lineNumber+=1
+        lineNumber+=2
     if (isScheduled == False):
-        print("Nothing is scheduled :)")
+        print("Nothing is scheduled :)") 
+"""
 
-
-    file.close()
 
 
 def set_task_done(filename: str, str_number: int) -> None:
