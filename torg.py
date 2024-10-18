@@ -2,6 +2,7 @@ import os
 import sys
 from datetime import datetime, timedelta
 from io import TextIOWrapper
+import re
 
 currentTime = datetime.now()
 curWeekday = currentTime.strftime("%A") 
@@ -60,10 +61,6 @@ def todo_view(filename: str, tag_filter: str) -> None:
     file.close()
 
 def agenda_view(filename: str) -> None:
-    file = open(filename, 'r')
-    file.close()
-    
-
     #TODO: add agenda view here
     #NOTE: form 7days 2d list, walk through the file line by line and add it to the 2D list by days
     #NOTE: SUN, MON, TUE, WED, THU, FRI, SAT
@@ -84,12 +81,22 @@ def agenda_view(filename: str) -> None:
 
         iterSchedDate = f"{year}-{month}-{day}" 
         agenda_dict.update({iterSchedDate: []})
+    
+    file = open(filename, 'r')
+    file.close()
 
     for agendaDate in agenda_dict.keys():
         print(agendaDate)
         for note in agenda_dict[agendaDate]:
             print(note) 
 
+
+"""
+    for line in file:
+        fileDate = re.search("*-*-*", line)
+        print(line[fileDate.start():] + line[:fileDate.end()])
+
+"""
 """     
     noteLine = ''
     lineNumber = 0
