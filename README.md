@@ -13,3 +13,4 @@ Terminal org mode
 - [ ] Deadlines with countdown
 - [x] Tags handling
 - [ ] Responsive user interface
+- [ ] Tag filter in agenda view
