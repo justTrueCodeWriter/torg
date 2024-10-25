@@ -66,6 +66,7 @@ def agenda_view(filename: str) -> None:
     #NOTE: SUN, MON, TUE, WED, THU, FRI, SAT
     #NOTE: [[], [], [], [], [], [], []]
 
+#----Init agenda_dict for 7 days----
     agenda_dict = dict()
     timeToday = datetime.now()
     for i in range (0, 7):
@@ -81,15 +82,41 @@ def agenda_view(filename: str) -> None:
 
         iterSchedDate = f"{year}-{month}-{day}" 
         agenda_dict.update({iterSchedDate: []})
-    
-    file = open(filename, 'r')
-    file.close()
+   
+#----Fill agenda_dict with notes----
+    with open(filename, 'r') as file:
+        noteLine = ''
+        lineNumber = -1
+        for line in file:
+            match = re.search(r'\d{4}-\d{2}-\d{2}', line)
+            if match and "SCHEDULED:" in line:
+                key = match.group()
+                if (key in agenda_dict):
+                    noteLine = noteLine.replace('\n', '')
+                    if("TODO" in noteLine):
+                        agenda_dict[key].append(f"{lineNumber} "+noteLine.replace("TODO", "\x1b[1;31;40m TODO \x1b[0m"))
+                    elif ("DONE" in noteLine):
+                        agenda_dict[key].append(f"{lineNumber} "+noteLine.replace("DONE", "\x1b[1;32;40m DONE \x1b[0m"))
+            noteLine = line 
+            lineNumber+=1
 
-    for agendaDate in agenda_dict.keys():
-        print(agendaDate)
+#----Print agenda----
+    for i, agendaDate in enumerate(agenda_dict.keys()):
+        timeToday = datetime.strptime(agendaDate, "%Y-%m-%d")
+        dt = timeToday + timedelta(days=i)
+        weekday = dt.strftime("%A") 
+        weekNumber = dt.strftime("%W")
+        day = dt.strftime("%d") 
+        month = dt.strftime("%m")
+        year = dt.strftime("%Y")
+
+
+        print(f"{weekday} {day} {months[int(month)-1]} {year} W{weekNumber}")
+        if not agenda_dict[agendaDate]:
+            print("Nothing is scheduled :)")
         for note in agenda_dict[agendaDate]:
             print(note) 
-
+        print("")
 
 """
     for line in file:
