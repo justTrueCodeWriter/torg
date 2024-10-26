@@ -103,7 +103,7 @@ def agenda_view(filename: str) -> None:
 #----Print agenda----
     for i, agendaDate in enumerate(agenda_dict.keys()):
         timeToday = datetime.strptime(agendaDate, "%Y-%m-%d")
-        dt = timeToday + timedelta(days=i)
+        dt = timeToday 
         weekday = dt.strftime("%A") 
         weekNumber = dt.strftime("%W")
         day = dt.strftime("%d") 
