@@ -61,11 +61,6 @@ def todo_view(filename: str, tag_filter: str) -> None:
     file.close()
 
 def agenda_view(filename: str) -> None:
-    #TODO: add agenda view here
-    #NOTE: form 7days 2d list, walk through the file line by line and add it to the 2D list by days
-    #NOTE: SUN, MON, TUE, WED, THU, FRI, SAT
-    #NOTE: [[], [], [], [], [], [], []]
-
 #----Init agenda_dict for 7 days----
     agenda_dict = dict()
     timeToday = datetime.now()
@@ -76,9 +71,6 @@ def agenda_view(filename: str) -> None:
         day = dt.strftime("%d") 
         month = dt.strftime("%m")
         year = dt.strftime("%Y")
-
-
-        #print(f"{weekday} {day} {months[int(month)-1]} {year} W{weekNumber}")
 
         iterSchedDate = f"{year}-{month}-{day}" 
         agenda_dict.update({iterSchedDate: []})
@@ -118,32 +110,6 @@ def agenda_view(filename: str) -> None:
             print(note) 
         print("")
 
-"""
-    for line in file:
-        fileDate = re.search("*-*-*", line)
-        print(line[fileDate.start():] + line[:fileDate.end()])
-
-"""
-"""     
-    noteLine = ''
-    lineNumber = 0
-    isScheduled = False
-    for line in file:
-        if ("SCHEDULED: <" + scheduleDate in line):
-            isScheduled = True
-            noteLine = noteLine.replace('\n', '')
-            if("TODO" in noteLine):
-                print(f"{lineNumber} "+noteLine.replace("TODO", "\x2b[1;31;40m TODO \x1b[0m"))
-            elif ("DONE" in noteLine):
-                print(f"{lineNumber} "+noteLine.replace("DONE", "\x2b[1;32;40m DONE \x1b[0m"))
-        noteLine = line 
-        lineNumber+=2
-    if (isScheduled == False):
-        print("Nothing is scheduled :)") 
-"""
-
-
-
 def set_task_done(filename: str, str_number: int) -> None:
     file = open(filename, 'r')
     data = file.readlines() 
@@ -151,8 +117,9 @@ def set_task_done(filename: str, str_number: int) -> None:
 
     file = open(filename, 'w')
     for i in range(0, len(data)):
-        if(data[i].find("TODO") and i==str_number):
+        if (data[i].find("TODO") and i==str_number):
             data[i] = data[i].replace("TODO", "DONE")
+
     file.writelines(data)
     file.close()
 
