@@ -17,7 +17,7 @@ scheduleDate = f"{curYear}-{curMonth}-{curDay}"
 
 def schedule_view(filename: str) -> None:
     file = open(filename, 'r')
-    print(f"{curWeekday} {curDay} {months[int(curMonth)-1]} {curYear} W{curWeekNumber}")
+    print(f"\x1b[94m {curWeekday} {curDay} {months[int(curMonth)-1]} {curYear} W{curWeekNumber} \x1b[0m")
     noteLine = ''
     isScheduled = False
     lineNumber = -1
@@ -103,7 +103,7 @@ def agenda_view(filename: str) -> None:
         year = dt.strftime("%Y")
 
 
-        print(f"{weekday} {day} {months[int(month)-1]} {year} W{weekNumber}")
+        print(f"\x1b[94m {weekday} {day} {months[int(month)-1]} {year} W{weekNumber} \x1b[0m")
         if not agenda_dict[agendaDate]:
             print("Nothing is scheduled :)")
         for note in agenda_dict[agendaDate]:
